@@ -31,6 +31,8 @@ type Options struct {
 	Comments  bool // Print comments (true if nil *Options provided)
 	TabIndent bool // Use tabs for indent (true if nil *Options provided)
 	TabWidth  int  // Tab width (8 if nil *Options provided)
+
+	FormatOnly bool // Disable the insertion and deletion of imports
 }
 
 // Process formats and adjusts imports for the provided file.
@@ -46,9 +48,11 @@ func Process(filename string, src []byte, opt *Options) ([]byte, error) {
 		return nil, err
 	}
 
-	_, err = fixImports(fileSet, file)
-	if err != nil {
-		return nil, err
+	if !opt.FormatOnly {
+		_, err = fixImports(fileSet, file)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	sortImports(fileSet, file)
