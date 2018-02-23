@@ -107,10 +107,15 @@ function bindToggleLink(el, prefix) {
   $(el).click(function() {
     var href = $(el).attr('href');
     var i = href.indexOf('#'+prefix);
-    if (i < 0) {
+    if (i < 0 && prefix != "example_") {
       return;
     }
-    var id = '#' + prefix + href.slice(i+1+prefix.length);
+    var id = '#' + prefix;
+    if (prefix == "example_") {
+      id += href.slice(1);
+    } else {
+      id += href.slice(i+1+prefix.length);
+    }
     if ($(id).is('.toggle')) {
       $(id).find('.toggleButton').first().click();
     }
